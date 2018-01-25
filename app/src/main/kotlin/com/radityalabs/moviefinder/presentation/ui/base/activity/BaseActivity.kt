@@ -16,7 +16,7 @@ import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseActivity<V : BaseView, P : BasePresenter<V>> : AppCompatActivity(), BaseView {
+abstract class BaseActivity<V : BaseView, P : BasePresenter<V>> : SingleActivity(), BaseView {
     @Inject
     lateinit var presenter: P
 
@@ -32,7 +32,13 @@ abstract class BaseActivity<V : BaseView, P : BasePresenter<V>> : AppCompatActiv
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupInjection()
         presenter.attachView(this as V)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        setupView()
         setupData()
     }
 
@@ -46,6 +52,10 @@ abstract class BaseActivity<V : BaseView, P : BasePresenter<V>> : AppCompatActiv
         isSafe = false
         presenter.detachView()
     }
+
+    protected abstract fun setupInjection()
+
+    protected abstract fun setupView()
 
     protected abstract fun setupData()
 }

@@ -12,15 +12,16 @@ import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseScreen<V : BaseView, P : BasePresenter<V>> (
+abstract class BaseScreen<V : BaseView, P : BasePresenter<V>>(
         context: Context,
         attributeSet: AttributeSet? = null,
-        defStyle: Int = 0) : LinearLayout(context, attributeSet, defStyle), BaseView {
+        defStyle: Int = 0) : Screen(context, attributeSet, defStyle),
+        BaseView {
 
     @Inject
     lateinit var presenter: P
 
-    protected val screenComponent : ScreenComponent by lazy {
+    protected val screenComponent: ScreenComponent by lazy {
         DaggerScreenComponent.builder()
                 .appComponent(context.appComponent())
                 .screenModule(ScreenModule(this))
