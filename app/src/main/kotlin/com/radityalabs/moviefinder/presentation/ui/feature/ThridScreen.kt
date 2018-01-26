@@ -5,25 +5,26 @@ import android.view.LayoutInflater
 import com.radityalabs.moviefinder.R
 import com.radityalabs.moviefinder.external.navigator.Navigator
 import com.radityalabs.moviefinder.presentation.di.module.HomeScreenModule
+import com.radityalabs.moviefinder.presentation.di.module.SecondScreenModule
+import com.radityalabs.moviefinder.presentation.di.module.ThridScreenModule
 import com.radityalabs.moviefinder.presentation.ui.base.presenter.BasePresenter
 import com.radityalabs.moviefinder.presentation.ui.base.screen.BaseScreen
-import com.radityalabs.moviefinder.presentation.ui.base.screen.Screen
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import kotlinx.android.synthetic.main.screen_home.view.*
 import javax.inject.Inject
 
-class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeScreenPresenter>(context),
-        HomeScreenPresenter.View {
+class ThridScreen(context: Context) : BaseScreen<ThridScreenPresenter.View, ThridScreenPresenter>(context),
+        ThridScreenPresenter.View {
 
     internal var navigator: Navigator? = null
         @Inject set
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.screen_home, this, true)
+        LayoutInflater.from(context).inflate(R.layout.thrid_home, this, true)
     }
 
     override fun setupInjection() {
-        screenComponent.plus(HomeScreenModule()).inject(this)
+        screenComponent.plus(ThridScreenModule()).inject(this)
     }
 
     override fun setupEvent() {
@@ -31,7 +32,7 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
 
     override fun setupView() {
         button.setOnClickListener {
-            navigator?.goTo(SecondScreen(context))
+            navigator?.goBack()
         }
     }
 
@@ -39,6 +40,6 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
     }
 }
 
-class HomeScreenPresenter @Inject constructor() : BasePresenter<HomeScreenPresenter.View>() {
+class ThridScreenPresenter @Inject constructor() : BasePresenter<ThridScreenPresenter.View>() {
     interface View : BaseView
 }

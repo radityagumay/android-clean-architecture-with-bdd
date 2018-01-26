@@ -10,11 +10,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="HOME SCREEN" />
+        android:text="SECOND SCREEN" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/forward"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="go forward!" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="gp back!" />
 </LinearLayout>

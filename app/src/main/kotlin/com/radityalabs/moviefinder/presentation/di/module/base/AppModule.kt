@@ -1,4 +1,4 @@
-package com.radityalabs.moviefinder.presentation.di.module
+package com.radityalabs.moviefinder.presentation.di.module.base
 
 import com.radityalabs.moviefinder.data.network.RestService
 import com.radityalabs.moviefinder.data.network.RetrofitHelper

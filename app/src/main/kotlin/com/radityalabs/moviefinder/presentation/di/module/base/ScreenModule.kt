@@ -1,4 +1,4 @@
-package com.radityalabs.moviefinder.presentation.di.module
+package com.radityalabs.moviefinder.presentation.di.module.base
 
 import android.content.Context
 import android.view.View

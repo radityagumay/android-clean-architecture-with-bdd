@@ -2,11 +2,10 @@ package com.radityalabs.moviefinder.presentation.ui.base.screen
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.LinearLayout
 import com.radityalabs.moviefinder.external.appComponent
-import com.radityalabs.moviefinder.presentation.di.component.DaggerScreenComponent
-import com.radityalabs.moviefinder.presentation.di.component.ScreenComponent
-import com.radityalabs.moviefinder.presentation.di.module.ScreenModule
+import com.radityalabs.moviefinder.presentation.di.component.base.DaggerScreenComponent
+import com.radityalabs.moviefinder.presentation.di.component.base.ScreenComponent
+import com.radityalabs.moviefinder.presentation.di.module.base.ScreenModule
 import com.radityalabs.moviefinder.presentation.ui.base.presenter.BasePresenter
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import javax.inject.Inject

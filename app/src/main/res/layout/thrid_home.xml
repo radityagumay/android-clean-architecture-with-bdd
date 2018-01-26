@@ -10,11 +10,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="HOME SCREEN" />
+        android:text="THRID SCREEN" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="go forward!" />
+        android:text="go back!" />
 </LinearLayout>

@@ -22,14 +22,13 @@ open class Navigator {
         }
     }
 
-    private val backStack = ArrayDeque<Screen>()
     private var subject: PublishSubject<Screen> = PublishSubject.create()
 
     var root: Screen? = null
         private set
     var container: View? = null
         private set
-    var stack = ArrayDeque<Screen>()
+    var stack = Stack<Screen>()
         private set
 
     fun toObservable(): Observable<Screen> {
@@ -41,18 +40,19 @@ open class Navigator {
         subject.onNext(screen)
     }
 
-    fun goBack(): Screen {
-        val view = stack.remove()
-        subject.onNext(view)
-        return view
+    fun goBack() {
+        stack.pop()
+        subject.onNext(stack.peek())
     }
 
     fun setRootNavigator(root: Screen) {
-        this.root = root
-        backStack.add(root)
+        stack.add(root)
     }
 
     fun setContainerNavigator(view: View) {
+        if (this.container != null) {
+            throw IllegalStateException("container is not null, dont added it again!")
+        }
         this.container = view
     }
 }

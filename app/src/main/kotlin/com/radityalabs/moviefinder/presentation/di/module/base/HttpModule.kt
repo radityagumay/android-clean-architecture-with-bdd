@@ -1,4 +1,4 @@
-package com.radityalabs.moviefinder.presentation.di.module
+package com.radityalabs.moviefinder.presentation.di.module.base
 
 import com.google.gson.Gson
 import com.radityalabs.moviefinder.BuildConfig

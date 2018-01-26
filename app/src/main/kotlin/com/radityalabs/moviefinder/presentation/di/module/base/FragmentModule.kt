@@ -1,4 +1,4 @@
-package com.radityalabs.moviefinder.presentation.di.module
+package com.radityalabs.moviefinder.presentation.di.module.base
 
 import android.app.Activity
 import android.support.v4.app.Fragment

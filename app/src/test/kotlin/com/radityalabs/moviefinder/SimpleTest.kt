@@ -11,7 +11,7 @@ class SimpleTest : Spek({
         val x = 5
         val y = 5
 
-        on("addition") {
+        on("get user service on sucess") {
             it("x = $x addition by y = $y should equal to : 9") {
                 assertEquals(10, 10)
             }
