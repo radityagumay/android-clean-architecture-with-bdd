@@ -15,7 +15,6 @@ import com.radityalabs.moviefinder.presentation.di.module.HomeScreenModule
 import com.radityalabs.moviefinder.presentation.ui.base.presenter.BasePresenter
 import com.radityalabs.moviefinder.presentation.ui.base.screen.BaseScreen
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
-import com.radityalabs.moviefinder.presentation.ui.feature.SecondBundle
 import com.radityalabs.moviefinder.presentation.ui.feature.SecondScreen
 import com.radityalabs.universaladapter.UniversalAdapter
 import kotlinx.android.synthetic.main.screen_home.view.*

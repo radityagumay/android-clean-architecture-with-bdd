@@ -9,7 +9,6 @@ import com.radityalabs.moviefinder.presentation.ui.base.presenter.BasePresenter
 import com.radityalabs.moviefinder.presentation.ui.base.screen.Screen
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import com.radityalabs.moviefinder.presentation.ui.feature.home.HomeScreen
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 

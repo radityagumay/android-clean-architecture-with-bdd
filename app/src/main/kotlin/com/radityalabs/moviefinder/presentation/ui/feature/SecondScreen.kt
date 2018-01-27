@@ -12,7 +12,6 @@ import com.radityalabs.moviefinder.presentation.di.module.SecondScreenModule
 import com.radityalabs.moviefinder.presentation.ui.base.presenter.BasePresenter
 import com.radityalabs.moviefinder.presentation.ui.base.screen.BaseScreen
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
-import kotlinx.android.synthetic.main.second_home.view.*
 import javax.inject.Inject
 
 @SuppressLint("ViewConstructor")

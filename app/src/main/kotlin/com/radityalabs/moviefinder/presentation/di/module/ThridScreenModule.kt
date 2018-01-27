@@ -1,8 +1,10 @@
 package com.radityalabs.moviefinder.presentation.di.module
 
 import com.radityalabs.moviefinder.data.RestService
-import com.radityalabs.moviefinder.data.repository.*
-import com.radityalabs.moviefinder.domain.*
+import com.radityalabs.moviefinder.data.repository.ThridDataStore
+import com.radityalabs.moviefinder.data.repository.ThridRepository
+import com.radityalabs.moviefinder.domain.ThridInteractor
+import com.radityalabs.moviefinder.domain.ThridUseCase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
