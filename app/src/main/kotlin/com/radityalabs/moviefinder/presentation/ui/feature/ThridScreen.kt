@@ -31,9 +31,6 @@ class ThridScreen(context: Context) : BaseScreen<ThridScreenPresenter.View, Thri
     }
 
     override fun setupView() {
-        button.setOnClickListener {
-            navigator?.goBack()
-        }
     }
 
     override fun setupData() {

@@ -1,6 +1,6 @@
 package com.radityalabs.moviefinder.data.repository
 
-import com.radityalabs.moviefinder.data.network.RestService
+import com.radityalabs.moviefinder.data.RestService
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -10,6 +10,6 @@ interface ThridRepository {
 
 class ThridDataStore @Inject constructor(private val service: RestService) : ThridRepository {
     override fun fetchMovies(): Single<List<Boolean>> {
-        return service.fetchMovies()
+        return Single.never()
     }
 }

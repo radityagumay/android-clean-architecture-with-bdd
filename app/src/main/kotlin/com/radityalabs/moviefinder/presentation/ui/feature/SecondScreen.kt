@@ -1,8 +1,12 @@
 package com.radityalabs.moviefinder.presentation.ui.feature
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import com.radityalabs.moviefinder.R
+import com.radityalabs.moviefinder.domain.SecondUseCase
 import com.radityalabs.moviefinder.external.navigator.Navigator
 import com.radityalabs.moviefinder.presentation.di.module.SecondScreenModule
 import com.radityalabs.moviefinder.presentation.ui.base.presenter.BasePresenter
@@ -11,8 +15,15 @@ import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import kotlinx.android.synthetic.main.second_home.view.*
 import javax.inject.Inject
 
-class SecondScreen(context: Context) : BaseScreen<SecondScreenPresenter.View, SecondScreenPresenter>(context),
+@SuppressLint("ViewConstructor")
+class SecondScreen @JvmOverloads constructor(context: Context,
+                                             attributeSet: AttributeSet? = null,
+                                             defStyle: Int = 0,
+                                             movieId: Int? = null) :
+        BaseScreen<SecondScreenPresenter.View, SecondScreenPresenter>(context, attributeSet, defStyle),
         SecondScreenPresenter.View {
+
+    private val movieId = movieId
 
     internal var navigator: Navigator? = null
         @Inject set
@@ -28,20 +39,24 @@ class SecondScreen(context: Context) : BaseScreen<SecondScreenPresenter.View, Se
     override fun setupEvent() {
     }
 
-    override fun setupView() {
-        forward.setOnClickListener {
-            navigator?.goTo(ThridScreen(context))
-        }
-
-        back.setOnClickListener {
-            navigator?.goBack()
-        }
-    }
+    override fun setupView() {}
 
     override fun setupData() {
+        movieId?.let {
+            presenter.getMoviewById(movieId)
+        }
     }
 }
 
-class SecondScreenPresenter @Inject constructor() : BasePresenter<SecondScreenPresenter.View>() {
+class SecondScreenPresenter @Inject constructor(private val usecase: SecondUseCase) : BasePresenter<SecondScreenPresenter.View>() {
+    fun getMoviewById(movieId: Int) {
+        addDisposable(usecase.getMovieById(movieId).subscribe({ success ->
+            Log.d("RADITYAAAA", success.toString())
+        }, { error ->
+        }))
+    }
+
     interface View : BaseView
 }
+
+data class SecondBundle(val movieId: Int? = null)

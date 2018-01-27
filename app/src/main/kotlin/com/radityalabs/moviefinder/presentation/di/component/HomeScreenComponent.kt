@@ -2,7 +2,7 @@ package com.radityalabs.moviefinder.presentation.di.component
 
 import com.radityalabs.moviefinder.data.repository.HomeRepository
 import com.radityalabs.moviefinder.presentation.di.module.HomeScreenModule
-import com.radityalabs.moviefinder.presentation.ui.feature.HomeScreen
+import com.radityalabs.moviefinder.presentation.ui.feature.home.HomeScreen
 import dagger.Subcomponent
 import javax.inject.Singleton
 
