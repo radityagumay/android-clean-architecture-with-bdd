@@ -33,6 +33,15 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
 
     override fun setupData() {}
 
+    override fun onBackPressed() {
+        val stack = navigator?.stack?.peek()
+        if (stack != null) {
+            navigator?.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     inline fun <reified T : Screen> Screen.factory(context: Context): T =
             when (this) {
                 is HomeScreen -> HomeScreen(context) as T

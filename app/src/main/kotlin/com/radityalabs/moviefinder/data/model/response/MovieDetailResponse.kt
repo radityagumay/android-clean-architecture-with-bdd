@@ -27,7 +27,7 @@ sealed class MovieDetail {
             @SerializedName("tagline") val tagline: String? = null,
             @SerializedName("title") val title: String? = null,
             @SerializedName("video") val video: Boolean? = null,
-            @SerializedName("vote_average") val voteAverage: Int? = null,
+            @SerializedName("vote_average") val voteAverage: Float? = null,
             @SerializedName("vote_count") val voteCount: Int? = null
     )
 

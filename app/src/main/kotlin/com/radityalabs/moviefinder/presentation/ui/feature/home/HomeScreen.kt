@@ -9,6 +9,7 @@ import com.radityalabs.moviefinder.R
 import com.radityalabs.moviefinder.data.model.response.Discover
 import com.radityalabs.moviefinder.domain.HomeUseCase
 import com.radityalabs.moviefinder.external.animator
+import com.radityalabs.moviefinder.external.navigator.MovieData
 import com.radityalabs.moviefinder.external.navigator.Navigator
 import com.radityalabs.moviefinder.external.snackBar
 import com.radityalabs.moviefinder.presentation.di.module.HomeScreenModule
@@ -21,6 +22,7 @@ import com.radityalabs.universaladapter.UniversalAdapter
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.screen_home.view.*
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeScreenPresenter>(context),
         HomeScreenPresenter.View {
@@ -31,12 +33,17 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
         private const val INITIAL_PAGE = 1
     }
 
+    internal var navigator: Navigator? = null
+        @Inject set
+
+    private var isDataFromCacheAvailable = false
     private var isLoading = false
 
     private var nextPage: Int = INITIAL_PAGE
+    private var firstVisibleItemPosition by Delegates.notNull<Int>()
 
-    internal var navigator: Navigator? = null
-        @Inject set
+    private var homeParcelData: HomeScreenParcel? = null
+    private var movies = mutableListOf<Discover.Result>()
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: UniversalAdapter<Discover.Result, HomeViewHolder>
@@ -45,11 +52,17 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
         LayoutInflater.from(context).inflate(R.layout.screen_home, this, true)
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        navigator?.setParcelData(TAG, HomeScreenParcel(movies, nextPage, firstVisibleItemPosition))
+    }
+
     override fun setupInjection() {
         screenComponent.plus(HomeScreenModule()).inject(this)
     }
 
     override fun setupEvent() {
+        initCache()
         adapter = UniversalAdapter({ parent, _ ->
             HomeViewHolder.inflate(parent).also {
                 it.container.setOnClickListener(setClickListener(adapter, it))
@@ -70,13 +83,23 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
     }
 
     override fun setupData() {
-        presenter.fetchMovies(INITIAL_PAGE)
+        if (isDataFromCacheAvailable) {
+            homeParcelData?.movies?.let {
+                movies.addAll(it)
+                adapter.addAll(it)
+
+                service.scrollToPosition(firstVisibleItemPosition)
+            }
+        } else {
+            presenter.fetchMovies(INITIAL_PAGE)
+        }
     }
 
     override fun errorMessage() = resources.getString(R.string.not_found)
 
     override fun onFetchMoviesSuccess(list: List<Discover.Result>) {
         isLoading = false
+        movies.addAll(list)
         adapter.addAll(list)
     }
 
@@ -95,6 +118,18 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
         navigator?.goTo(MovieDetailScreen(context), MovieDetailData(item.id))
     }
 
+    private fun initCache() {
+        try {
+            homeParcelData = navigator?.parcelData?.get(TAG) as HomeScreenParcel
+            homeParcelData?.let {
+                isDataFromCacheAvailable = true
+                nextPage = it.lastPage + 1
+                firstVisibleItemPosition = it.firstVisibleItemPosition
+            }
+        } catch (ex: Exception) {
+        }
+    }
+
     private fun loadMoreItems() {
         isLoading = true
         presenter.fetchMovies(nextPage)
@@ -105,8 +140,7 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
             super.onScrolled(recyclerView, dx, dy)
             val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
+            firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
             if (!isLoading) {
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
                     nextPage += 1
@@ -122,10 +156,10 @@ class HomeScreenPresenter @Inject constructor(private val usecase: HomeUseCase) 
         addDisposable(usecase.fetchMovies(page)
                 .onErrorResumeNext(Single.error(Throwable(view.errorMessage())))
                 .subscribe({ success ->
-            view.onFetchMoviesSuccess(success)
-        }, { error ->
-            view.onFetchMoviesError(error.message ?: view.errorMessage())
-        }))
+                    view.onFetchMoviesSuccess(success)
+                }, { error ->
+                    view.onFetchMoviesError(error.message ?: view.errorMessage())
+                }))
     }
 
     interface View : BaseView {
@@ -136,3 +170,7 @@ class HomeScreenPresenter @Inject constructor(private val usecase: HomeUseCase) 
         fun errorMessage(): String
     }
 }
+
+data class HomeScreenParcel(val movies: List<Discover.Result>,
+                            val lastPage: Int,
+                            val firstVisibleItemPosition: Int) : MovieData

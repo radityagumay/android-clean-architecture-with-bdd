@@ -42,6 +42,10 @@ open class Navigator {
         return subject
     }
 
+    fun setParcelData(screenName: String, parcel: MovieData) {
+        parcelData.put(screenName, parcel)
+    }
+
     fun goTo(screen: Screen, parcel: MovieData) {
         stack.add(screen)
         parcelData.put(screen.getClassName(), parcel)

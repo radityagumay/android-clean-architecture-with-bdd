@@ -2,14 +2,13 @@ package com.radityalabs.moviefinder.presentation.ui.feature
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.support.v7.graphics.Palette
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import com.radityalabs.moviefinder.R
 import com.radityalabs.moviefinder.data.model.response.MovieDetail
 import com.radityalabs.moviefinder.domain.SecondUseCase
 import com.radityalabs.moviefinder.external.loadAsBitmap
-import com.radityalabs.moviefinder.external.loadImage
 import com.radityalabs.moviefinder.external.navigator.MovieData
 import com.radityalabs.moviefinder.external.navigator.Navigator
 import com.radityalabs.moviefinder.external.snackBar
@@ -19,10 +18,6 @@ import com.radityalabs.moviefinder.presentation.ui.base.screen.BaseScreen
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import kotlinx.android.synthetic.main.second_home.view.*
 import javax.inject.Inject
-import android.support.design.widget.FloatingActionButton
-import android.R.id.primary
-import android.support.v7.graphics.Palette
-
 
 @SuppressLint("ViewConstructor")
 class MovieDetailScreen @JvmOverloads constructor(context: Context,
