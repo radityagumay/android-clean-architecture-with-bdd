@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.pierfrancescosoffritti.youtubeplayer.player.AbstractYouTubePlayerListener
 import com.radityalabs.moviefinder.R
+import com.radityalabs.moviefinder.data.model.entity.MovieDetailViewEntity
 import com.radityalabs.moviefinder.data.model.response.MovieDetail
 import com.radityalabs.moviefinder.domain.SecondUseCase
 import com.radityalabs.moviefinder.external.loadAsBitmap
@@ -40,6 +41,11 @@ class MovieDetailScreen @JvmOverloads constructor(context: Context,
         LayoutInflater.from(context).inflate(R.layout.second_home, this, true)
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        video.release()
+    }
+
     override fun setupInjection() {
         screenComponent.plus(SecondScreenModule()).inject(this)
     }
@@ -56,21 +62,21 @@ class MovieDetailScreen @JvmOverloads constructor(context: Context,
         }
     }
 
-    override fun onGetMovieSuccess(response: MovieDetail.Response?) {
-        response?.let {
-            it.belongsToCollection?.posterPath?.loadAsBitmap(context, image, { palette ->
+    override fun onGetMovieSuccess(response: MovieDetailViewEntity) {
+        with(response) {
+            posterImage?.loadAsBitmap(context, image, { palette ->
                 applyPalette(palette)
             })
 
-            youtubView(it.videos?.results?.get(0)?.key)
+            youtubView(youtubeKey)
 
-            collapsingToolbar.title = it.originalTitle
+            collapsingToolbar.title = title
             collapsingToolbar.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
 
-            title.text = it.originalTitle
-            description.text = it.overview
+            this@MovieDetailScreen.title.text = title
+            description.text = overview
 
-            genre.text = it.appendedGenre
+            this@MovieDetailScreen.genre.text = genre
         }
     }
 
@@ -112,7 +118,7 @@ class MovieDetailPresenter @Inject constructor(private val usecase: SecondUseCas
     }
 
     interface View : BaseView {
-        fun onGetMovieSuccess(response: MovieDetail.Response?)
+        fun onGetMovieSuccess(response: MovieDetailViewEntity)
 
         fun onGetMoviewError(message: String)
 
