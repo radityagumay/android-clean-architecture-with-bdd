@@ -38,6 +38,13 @@ open class Navigator {
     var parcelData: ConcurrentHashMap<String, MovieData> = ConcurrentHashMap()
         private set
 
+    fun cleanUp() {
+        stack = Stack()
+        parcelData = ConcurrentHashMap()
+        container = null
+        root = null
+    }
+
     fun toObservable(): Observable<Screen> {
         return subject
     }

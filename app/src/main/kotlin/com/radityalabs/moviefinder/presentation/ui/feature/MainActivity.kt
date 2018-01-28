@@ -37,6 +37,7 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
         val stackSize = navigator?.stack?.size ?: 0
 
         if (stackSize == 0) {
+            navigator?.cleanUp()
             super.onBackPressed()
             return
         }
@@ -45,6 +46,7 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
             val rootName = navigator?.root?.getClassName()
             val lastStack = navigator?.stack?.get(0)?.getClassName()
             if (rootName == lastStack) {
+                navigator?.cleanUp()
                 super.onBackPressed()
                 return
             }
