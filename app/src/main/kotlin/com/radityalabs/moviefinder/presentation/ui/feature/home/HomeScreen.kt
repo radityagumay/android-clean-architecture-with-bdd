@@ -22,7 +22,6 @@ import com.radityalabs.universaladapter.UniversalAdapter
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.screen_home.view.*
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeScreenPresenter>(context),
         HomeScreenPresenter.View {
@@ -40,7 +39,7 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
     private var isLoading = false
 
     private var nextPage: Int = INITIAL_PAGE
-    private var firstVisibleItemPosition by Delegates.notNull<Int>()
+    private var firstVisibleItemPosition: Int? = null
 
     private var homeParcelData: HomeScreenParcel? = null
     private var movies = mutableListOf<Discover.Result>()
@@ -54,7 +53,9 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        navigator?.setParcelData(TAG, HomeScreenParcel(movies, nextPage, firstVisibleItemPosition))
+        firstVisibleItemPosition?.let {
+            navigator?.setParcelData(TAG, HomeScreenParcel(movies, nextPage, it))
+        }
     }
 
     override fun setupInjection() {
@@ -88,7 +89,7 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
                 movies.addAll(it)
                 adapter.addAll(it)
 
-                service.scrollToPosition(firstVisibleItemPosition)
+                service.scrollToPosition(firstVisibleItemPosition!!)
             }
         } else {
             presenter.fetchMovies(INITIAL_PAGE)
@@ -142,7 +143,7 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
             val totalItemCount = layoutManager.itemCount
             firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
             if (!isLoading) {
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                if (visibleItemCount + firstVisibleItemPosition!! >= totalItemCount) {
                     nextPage += 1
                     loadMoreItems()
                 }

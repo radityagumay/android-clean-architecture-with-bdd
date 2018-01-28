@@ -55,7 +55,11 @@ open class Navigator {
     fun goBack() {
         val pop = stack.pop()
         parcelData.remove(pop.getClassName())
-        subject.onNext(stack.peek())
+        if (stack.isEmpty()) {
+            subject.onNext(pop)
+        } else {
+            subject.onNext(stack.peek())
+        }
     }
 
     fun setRootNavigator(root: Screen) {
