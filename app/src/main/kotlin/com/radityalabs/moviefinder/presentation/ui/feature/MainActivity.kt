@@ -34,12 +34,25 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
     override fun setupData() {}
 
     override fun onBackPressed() {
-        val stack = navigator?.stack?.peek()
-        if (stack != null) {
-            navigator?.goBack()
-        } else {
+        val stackSize = navigator?.stack?.size ?: 0
+
+        if (stackSize == 0) {
+            navigator?.cleanUp()
             super.onBackPressed()
+            return
         }
+
+        if (stackSize == 1) {
+            val rootName = navigator?.root?.getClassName()
+            val lastStack = navigator?.stack?.get(0)?.getClassName()
+            if (rootName == lastStack) {
+                navigator?.cleanUp()
+                super.onBackPressed()
+                return
+            }
+        }
+
+        navigator?.goBack()
     }
 
     inline fun <reified T : Screen> Screen.factory(context: Context): T =

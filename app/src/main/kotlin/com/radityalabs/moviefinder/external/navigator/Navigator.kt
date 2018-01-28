@@ -38,6 +38,13 @@ open class Navigator {
     var parcelData: ConcurrentHashMap<String, MovieData> = ConcurrentHashMap()
         private set
 
+    fun cleanUp() {
+        stack = Stack()
+        parcelData = ConcurrentHashMap()
+        container = null
+        root = null
+    }
+
     fun toObservable(): Observable<Screen> {
         return subject
     }
@@ -55,10 +62,15 @@ open class Navigator {
     fun goBack() {
         val pop = stack.pop()
         parcelData.remove(pop.getClassName())
-        subject.onNext(stack.peek())
+        if (stack.isEmpty()) {
+            subject.onNext(pop)
+        } else {
+            subject.onNext(stack.peek())
+        }
     }
 
     fun setRootNavigator(root: Screen) {
+        this.root = root
         stack.add(root)
     }
 

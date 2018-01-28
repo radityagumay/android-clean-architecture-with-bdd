@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.v7.graphics.Palette
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import com.pierfrancescosoffritti.youtubeplayer.player.AbstractYouTubePlayerListener
 import com.radityalabs.moviefinder.R
 import com.radityalabs.moviefinder.data.model.response.MovieDetail
 import com.radityalabs.moviefinder.domain.SecondUseCase
@@ -18,6 +19,7 @@ import com.radityalabs.moviefinder.presentation.ui.base.screen.BaseScreen
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
 import kotlinx.android.synthetic.main.second_home.view.*
 import javax.inject.Inject
+
 
 @SuppressLint("ViewConstructor")
 class MovieDetailScreen @JvmOverloads constructor(context: Context,
@@ -56,16 +58,19 @@ class MovieDetailScreen @JvmOverloads constructor(context: Context,
 
     override fun onGetMovieSuccess(response: MovieDetail.Response?) {
         response?.let {
-            val imagePath = "https://image.tmdb.org/t/p/w1280/${it.backdropPath}"
-            imagePath.loadAsBitmap(context, image, { palette ->
+            it.belongsToCollection?.posterPath?.loadAsBitmap(context, image, { palette ->
                 applyPalette(palette)
             })
 
-            collapsingToolbar.title = it.originalTitle;
+            youtubView(it.videos?.results?.get(0)?.key)
+
+            collapsingToolbar.title = it.originalTitle
             collapsingToolbar.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
 
             title.text = it.originalTitle
             description.text = it.overview
+
+            genre.text = it.appendedGenre
         }
     }
 
@@ -76,6 +81,18 @@ class MovieDetailScreen @JvmOverloads constructor(context: Context,
     override fun errorMessage() = resources.getString(R.string.not_found)
 
     override fun getClassName() = TAG
+
+    private fun youtubView(videoId: String?) {
+        videoId?.let {
+            video.initialize({ initializedYouTubePlayer ->
+                initializedYouTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
+                    override fun onReady() {
+                        initializedYouTubePlayer.loadVideo(videoId, 0f)
+                    }
+                })
+            }, true)
+        }
+    }
 
     private fun applyPalette(palette: Palette) {
         val primaryDark = resources.getColor(R.color.colorPrimaryDark)
