@@ -58,6 +58,8 @@ dependencies {
 
 
     testImplementation "junit:junit:4.12"
+    testImplementation 'org.mockito:mockito-core:2.12.0'
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -95,6 +97,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     implementation 'com.github.PierfrancescoSoffritti:AndroidYouTubePlayer:4.1.4'
+    implementation 'com.wdullaer:materialdatetimepicker:3.5.0'
 
     implementation "com.google.dagger:dagger:2.11"
     kapt "com.google.dagger:dagger-compiler:2.11"

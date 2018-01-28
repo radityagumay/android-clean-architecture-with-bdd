@@ -26,7 +26,7 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
 
     override fun navigator(navigator: Navigator?) {
         navigator?.toObservable()?.subscribe { screen ->
-            container.removeViewAt(0)
+            container.removeAllViews()
             container.addView(screen.factory(this))
         }
     }
