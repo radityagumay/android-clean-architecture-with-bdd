@@ -17,4 +17,9 @@ interface RestService {
     fun getMovieById(
             @Path("movie_id") movieId: Int
     ): Single<MovieDetail.Response>
+
+    @GET(RestConstant.discover)
+    fun fetchMoviesByDate(
+            @Query("primary_release_date.lte") date: String
+    ): Single<Discover.Response>
 }
