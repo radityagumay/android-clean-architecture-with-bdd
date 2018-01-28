@@ -3,7 +3,6 @@ package com.radityalabs.moviefinder.presentation.ui.feature.home
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.radityalabs.moviefinder.R
@@ -11,12 +10,15 @@ import com.radityalabs.moviefinder.data.model.response.Discover
 import com.radityalabs.moviefinder.domain.HomeUseCase
 import com.radityalabs.moviefinder.external.animator
 import com.radityalabs.moviefinder.external.navigator.Navigator
+import com.radityalabs.moviefinder.external.snackBar
 import com.radityalabs.moviefinder.presentation.di.module.HomeScreenModule
 import com.radityalabs.moviefinder.presentation.ui.base.presenter.BasePresenter
 import com.radityalabs.moviefinder.presentation.ui.base.screen.BaseScreen
 import com.radityalabs.moviefinder.presentation.ui.base.view.BaseView
-import com.radityalabs.moviefinder.presentation.ui.feature.SecondScreen
+import com.radityalabs.moviefinder.presentation.ui.feature.MovieDetailData
+import com.radityalabs.moviefinder.presentation.ui.feature.MovieDetailScreen
 import com.radityalabs.universaladapter.UniversalAdapter
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.screen_home.view.*
 import javax.inject.Inject
 
@@ -24,6 +26,8 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
         HomeScreenPresenter.View {
 
     companion object {
+        val TAG = HomeScreen::class.java.simpleName
+
         private const val INITIAL_PAGE = 1
     }
 
@@ -69,17 +73,26 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
         presenter.fetchMovies(INITIAL_PAGE)
     }
 
+    override fun errorMessage() = resources.getString(R.string.not_found)
+
     override fun onFetchMoviesSuccess(list: List<Discover.Result>) {
         isLoading = false
         adapter.addAll(list)
     }
+
+    override fun onFetchMoviesError(message: String) {
+        isLoading = false
+        snackBar(message)
+    }
+
+    override fun getClassName() = TAG
 
     fun setClickListener(adapter: UniversalAdapter<Discover.Result, HomeViewHolder>,
                          holder: HomeViewHolder) = View.OnClickListener {
         val position = holder.adapterPosition
         val item = adapter.items[position]
 
-        navigator?.goTo(SecondScreen(context, movieId = item.id))
+        navigator?.goTo(MovieDetailScreen(context), MovieDetailData(item.id))
     }
 
     private fun loadMoreItems() {
@@ -105,19 +118,21 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
 }
 
 class HomeScreenPresenter @Inject constructor(private val usecase: HomeUseCase) : BasePresenter<HomeScreenPresenter.View>() {
-    companion object {
-        private val TAG = HomeScreenPresenter::class.java.simpleName
-    }
-
     fun fetchMovies(page: Int) {
-        addDisposable(usecase.fetchMovies(page).subscribe({ success ->
+        addDisposable(usecase.fetchMovies(page)
+                .onErrorResumeNext(Single.error(Throwable(view.errorMessage())))
+                .subscribe({ success ->
             view.onFetchMoviesSuccess(success)
         }, { error ->
-            Log.e(TAG, error.message)
+            view.onFetchMoviesError(error.message ?: view.errorMessage())
         }))
     }
 
     interface View : BaseView {
         fun onFetchMoviesSuccess(list: List<Discover.Result>)
+
+        fun onFetchMoviesError(message: String)
+
+        fun errorMessage(): String
     }
 }

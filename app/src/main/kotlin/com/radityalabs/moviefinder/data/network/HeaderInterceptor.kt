@@ -1,4 +1,4 @@
-package com.radityalabs.moviefinder.data
+package com.radityalabs.moviefinder.data.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

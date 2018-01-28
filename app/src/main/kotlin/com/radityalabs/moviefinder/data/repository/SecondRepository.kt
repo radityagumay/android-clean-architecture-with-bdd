@@ -1,6 +1,6 @@
 package com.radityalabs.moviefinder.data.repository
 
-import com.radityalabs.moviefinder.data.RestService
+import com.radityalabs.moviefinder.data.network.RestService
 import com.radityalabs.moviefinder.data.model.response.MovieDetail
 import com.radityalabs.moviefinder.external.singleIo
 import io.reactivex.Single

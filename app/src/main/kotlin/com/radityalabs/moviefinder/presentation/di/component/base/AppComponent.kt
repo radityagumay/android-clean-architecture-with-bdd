@@ -1,6 +1,6 @@
 package com.radityalabs.moviefinder.presentation.di.component.base
 
-import com.radityalabs.moviefinder.data.RestService
+import com.radityalabs.moviefinder.data.network.RestService
 import com.radityalabs.moviefinder.external.navigator.Navigator
 import com.radityalabs.moviefinder.presentation.di.module.base.AppModule
 import com.radityalabs.moviefinder.presentation.di.module.base.HttpModule

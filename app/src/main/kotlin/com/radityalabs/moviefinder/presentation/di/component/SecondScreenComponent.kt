@@ -2,7 +2,7 @@ package com.radityalabs.moviefinder.presentation.di.component
 
 import com.radityalabs.moviefinder.data.repository.SecondRepository
 import com.radityalabs.moviefinder.presentation.di.module.SecondScreenModule
-import com.radityalabs.moviefinder.presentation.ui.feature.SecondScreen
+import com.radityalabs.moviefinder.presentation.ui.feature.MovieDetailScreen
 import dagger.Subcomponent
 import javax.inject.Singleton
 
@@ -11,7 +11,7 @@ import javax.inject.Singleton
         SecondScreenModule::class
 ))
 interface SecondScreenComponent {
-    fun inject(screen: SecondScreen)
+    fun inject(screen: MovieDetailScreen)
 
     fun repository(): SecondRepository
 }

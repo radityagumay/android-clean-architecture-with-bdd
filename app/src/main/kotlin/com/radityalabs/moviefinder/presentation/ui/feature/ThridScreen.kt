@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 class ThridScreen(context: Context) : BaseScreen<ThridScreenPresenter.View, ThridScreenPresenter>(context),
         ThridScreenPresenter.View {
+    override fun getClassName() = ThridScreen::class.java.simpleName
 
     internal var navigator: Navigator? = null
         @Inject set

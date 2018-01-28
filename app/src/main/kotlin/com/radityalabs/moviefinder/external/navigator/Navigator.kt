@@ -1,11 +1,15 @@
 package com.radityalabs.moviefinder.external.navigator
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import android.view.View
 import com.radityalabs.moviefinder.presentation.ui.base.screen.Screen
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import java.io.Serializable
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.HashMap
 
 @SuppressLint("StaticFieldLeak")
 open class Navigator {
@@ -22,6 +26,7 @@ open class Navigator {
         }
     }
 
+
     private var subject: PublishSubject<Screen> = PublishSubject.create()
 
     var root: Screen? = null
@@ -30,18 +35,22 @@ open class Navigator {
         private set
     var stack = Stack<Screen>()
         private set
+    var parcelData: ConcurrentHashMap<String, MovieData> = ConcurrentHashMap()
+        private set
 
     fun toObservable(): Observable<Screen> {
         return subject
     }
 
-    fun goTo(screen: Screen) {
+    fun goTo(screen: Screen, parcel: MovieData) {
         stack.add(screen)
+        parcelData.put(screen.getClassName(), parcel)
         subject.onNext(screen)
     }
 
     fun goBack() {
-        stack.pop()
+        val pop = stack.pop()
+        parcelData.remove(pop.getClassName())
         subject.onNext(stack.peek())
     }
 
@@ -50,9 +59,8 @@ open class Navigator {
     }
 
     fun setContainerNavigator(view: View) {
-        if (this.container != null) {
-            throw IllegalStateException("container is not null, dont added it again!")
-        }
         this.container = view
     }
 }
+
+interface MovieData

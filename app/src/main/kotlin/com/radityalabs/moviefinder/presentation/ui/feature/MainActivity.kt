@@ -22,9 +22,7 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
 
     override fun getLayoutId() = R.layout.activity_main
 
-    override fun initView() {
-        //setSupportActionBar(toolbar)
-    }
+    override fun initView() {}
 
     override fun navigator(navigator: Navigator?) {
         navigator?.toObservable()?.subscribe { screen ->
@@ -38,7 +36,7 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
     inline fun <reified T : Screen> Screen.factory(context: Context): T =
             when (this) {
                 is HomeScreen -> HomeScreen(context) as T
-                is SecondScreen -> SecondScreen(context) as T
+                is MovieDetailScreen -> MovieDetailScreen(context) as T
                 is ThridScreen -> ThridScreen(context) as T
                 else -> {
                     throw IllegalStateException("Screen are not define yet!")

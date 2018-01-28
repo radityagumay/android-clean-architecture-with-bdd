@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MovieFinder</string>
     <string name="action_settings">Settings</string>
+
+    <string name="not_found">Not Found</string>
+
 </resources>

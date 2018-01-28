@@ -1,4 +1,4 @@
-package com.radityalabs.moviefinder.data
+package com.radityalabs.moviefinder.data.network
 
 import com.radityalabs.moviefinder.data.model.response.Discover
 import com.radityalabs.moviefinder.data.model.response.MovieDetail

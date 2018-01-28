@@ -2,8 +2,8 @@ package com.radityalabs.moviefinder.presentation.di.module.base
 
 import com.google.gson.Gson
 import com.radityalabs.moviefinder.BuildConfig
-import com.radityalabs.moviefinder.data.HeaderInterceptor
-import com.radityalabs.moviefinder.data.RestService
+import com.radityalabs.moviefinder.data.network.HeaderInterceptor
+import com.radityalabs.moviefinder.data.network.RestService
 import com.radityalabs.moviefinder.presentation.di.scope.AppScope
 import dagger.Module
 import dagger.Provides

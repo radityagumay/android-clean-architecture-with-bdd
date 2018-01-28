@@ -1,6 +1,6 @@
 package com.radityalabs.moviefinder.presentation.di.module
 
-import com.radityalabs.moviefinder.data.RestService
+import com.radityalabs.moviefinder.data.network.RestService
 import com.radityalabs.moviefinder.data.repository.HomeDataStore
 import com.radityalabs.moviefinder.data.repository.HomeRepository
 import com.radityalabs.moviefinder.domain.HomeInteractor
