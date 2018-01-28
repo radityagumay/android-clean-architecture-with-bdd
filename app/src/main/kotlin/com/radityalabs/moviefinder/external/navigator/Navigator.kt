@@ -63,6 +63,7 @@ open class Navigator {
     }
 
     fun setRootNavigator(root: Screen) {
+        this.root = root
         stack.add(root)
     }
 
