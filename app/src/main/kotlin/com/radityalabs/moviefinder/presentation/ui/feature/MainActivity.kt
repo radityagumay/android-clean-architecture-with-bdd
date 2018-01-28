@@ -34,7 +34,9 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
     override fun setupData() {}
 
     override fun onBackPressed() {
-        if (navigator?.stack?.isEmpty() == true || navigator?.stack?.get(0)?.equals(navigator?.root) == true) {
+        val rootName = navigator?.root?.getClassName()
+        val lastStack = navigator?.stack?.get(0)?.getClassName()
+        if (navigator?.stack?.isEmpty() == true || (rootName == lastStack)) {
             super.onBackPressed()
         } else {
             navigator?.goBack()
