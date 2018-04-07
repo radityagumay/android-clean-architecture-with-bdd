@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.screen_home.view.*
 import java.util.*
 import javax.inject.Inject
 
-
 class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeScreenPresenter>(context),
         HomeScreenPresenter.View,
         DatePickerDialog.OnDateSetListener {
@@ -82,7 +81,7 @@ class HomeScreen(context: Context) : BaseScreen<HomeScreenPresenter.View, HomeSc
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         fab.setOnClickListener {
             val now = Calendar.getInstance()
-            val dpd = DatePickerDialog.newInstance(
+            val dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
                     this@HomeScreen,
                     now.get(Calendar.YEAR),
                     now.get(Calendar.MONTH),

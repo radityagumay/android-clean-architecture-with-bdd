@@ -59,7 +59,6 @@ class MainActivity : BaseActivity<MainPresenter.View, MainPresenter>() {
             when (this) {
                 is HomeScreen -> HomeScreen(context) as T
                 is MovieDetailScreen -> MovieDetailScreen(context) as T
-                is ThridScreen -> ThridScreen(context) as T
                 else -> {
                     throw IllegalStateException("Screen are not define yet!")
                 }
